@@ -9,6 +9,9 @@ player.events.on('playerStart', (queue, track) => {
     console.log(`-> Started playing: **${track.title}**`);
     queue.metadata.channel.send({ content: `Now playing: 🎶 -> **${track.title}** <- 🎶\n Link: ${track.url} ` });
     queue.metadata.channel.send({ embeds: [nowPlayingEmbed(queue)] });
+    if (!queue.isEmpty()) {
+        queue.metadata.channel.send({ embeds: [createQueueEmbed(queue)] });
+    }
 });
 
 player.events.on('audioTrackAdd', (queue, track) => {

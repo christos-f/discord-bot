@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { useQueue } = require("discord-player");
 const { nowPlayingEmbed } = require("../embeds/nowPlaying");
+const { createQueueEmbed } = require("../embeds/queue");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -36,7 +37,10 @@ module.exports = {
         }
         queue.node.setVolume(volume); //Pass the value for the volume here
         await interaction.editReply(`Volume set to **${volume}%** ${volumeIcon}`);
-        await interaction.followUp({ embeds: [nowPlayingEmbed(queue)] });
+        await interaction.followUp({ embeds: [nowPlayingEmbed(queue)] })
+        if (!queue.isEmpty()) {
+            await interaction.followUp({ embeds: [createQueueEmbed(queue)] })
+        }
 
     }
 }
