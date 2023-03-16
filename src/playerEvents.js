@@ -7,7 +7,7 @@ const player = useMasterPlayer(); // Get the player instance that we created ear
 player.events.on('playerStart', (queue, track) => {
     // Emitted when the player starts to play a song
     console.log(`-> Started playing: **${track.title}**`);
-    queue.metadata.channel.send({ content: `Now playing: 🎶 **${track.title}** 🎶\n Link: ${track.url} `, ephemeral: true });
+    queue.metadata.channel.send({ content: `Now playing: 🎶 -> **${track.title}** <- 🎶\n Link: ${track.url} ` });
     queue.metadata.channel.send({ embeds: [nowPlayingEmbed(queue)] });
 });
 
@@ -18,8 +18,8 @@ player.events.on('audioTrackAdd', (queue, track) => {
     // Update the channel to inform that a new track is added to the queue
     if (queue.isPlaying()) {
         queue.metadata.channel.send(`Track: **${track.title}** added to the queue ✅`);
-        queue.metadata.channel.send({ embeds: [createQueueEmbed(queue)] });
         queue.metadata.channel.send({ embeds: [nowPlayingEmbed(queue)] });
+        queue.metadata.channel.send({ embeds: [createQueueEmbed(queue)] });
     }
 });
 

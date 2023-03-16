@@ -38,7 +38,3 @@ for (const file of eventFiles) {
     }
     console.log(`-> [Loaded event] - ${event.name} ✅`)
 }
-
-client.on('ready', (client) => {
-    client.application.commands.set(CommandsArray)
-})

@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { useQueue } = require("discord-player");
-
-
+const { nowPlayingEmbed } = require("../embeds/nowPlaying");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -31,7 +30,13 @@ module.exports = {
         }
 
         const queue = useQueue(interaction.guild.id);
+        if (!queue) {
+            await interaction.editReply({ content: `Sorry, ${interaction.member} There are no tracks playing ❌`, ephemeral: true });
+            return
+        }
         queue.node.setVolume(volume); //Pass the value for the volume here
         await interaction.editReply(`Volume set to **${volume}%** ${volumeIcon}`);
+        await interaction.followUp({ embeds: [nowPlayingEmbed(queue)] });
+
     }
 }

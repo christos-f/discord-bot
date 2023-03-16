@@ -4,24 +4,17 @@ const createQueueEmbed = (queue) => {
         return { title: track.title, url: track.url }
     })
 
-    const allTracks = [{ title: queue.currentTrack.title, url: queue.currentTrack.url }, ...tracks]
 
-    const fields = allTracks.map((track, index) => {
-        if (track.title === queue.currentTrack.title) {
-            return {
-                name: `Now playing: 🎶 **${track.title}** 🎶 `, value: track.url
-            }
-        }
-
+    const fields = tracks.map((track, index) => {
         return {
-            name: `${index}. **${track.title}** 🎵 `, value: track.url
+            name: `${index + 1}. **${track.title}** 🎵 `, value: track.url
         }
     })
 
     return {
         color: 0x0099ff,
         author: {
-            name: 'Current Queue',
+            name: '\t\t\tCurrent Queue',
             icon_url: 'https://i.imgur.com/AfFp7pu.png',
             url: 'https://discord.js.org',
         },
