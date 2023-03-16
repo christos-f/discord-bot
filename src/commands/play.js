@@ -23,19 +23,29 @@ module.exports = {
 
         if (!searchResult.hasTracks()) {
             // If player didn't find any songs for this query
-            await interaction.editReply(`We found no tracks for ${query}!`);
+            await interaction.editReply({ content: `Sorry, ${inter.member} - No results found ... try again ? ❌`, ephemeral: true });
             return;
         } else {
+            await interaction.editReply({ content: `Loading your ${searchResult.playlist ? 'playlist' : 'track'}... 🎧`, ephemeral: true });
             try {
                 await player.play(channel, searchResult, {
                     nodeOptions: {
-                        metadata: interaction// we can access this metadata object using queue.metadata later on
-                    }
+                        metadata: {
+                            channel: interaction.channel,
+                            client: interaction.guild.members.me,
+                            requestedBy: interaction.user,
+                        },
+                        selfDeaf: true,
+                        volume: 1,
+                        leaveOnEmpty: true,
+                        leaveOnEmptyCooldown: 300000,
+                        leaveOnEnd: true,
+                        leaveOnEndCooldown: 300000,
+                    },
                 });
-                await interaction.editReply(`Loading your track`);
             } catch (e) {
                 // let's return error if something failed
-                return interaction.followUp(`Something went wrong: ${e}`);
+                return interaction.followUp(`Something went wrong ❌: ${e}`);
             }
         }
     }
